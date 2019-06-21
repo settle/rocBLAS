@@ -104,8 +104,12 @@ constexpr auto rocblas_datatype2string(rocblas_datatype type)
         return "i32_c";
     case rocblas_datatype_u32_c:
         return "u32_c";
+    case rocblas_datatype_bf8_r:
+        return "bf8_r";
     case rocblas_datatype_bf16_r:
         return "bf16_r";
+    case rocblas_datatype_bf8_c:
+        return "bf8_c";
     case rocblas_datatype_bf16_c:
         return "bf16_c";
     default:

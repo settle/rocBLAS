@@ -15,6 +15,7 @@
 
 #include <hip/hip_vector_types.h>
 
+#include "rocblas_bfloat8.h"
 #include "rocblas_bfloat16.h"
 
 /*! \brief rocblas_handle is a structure holding the rocblas library context.
@@ -124,6 +125,8 @@ typedef enum rocblas_datatype_
     rocblas_datatype_u32_c  = 167, /**< 32 bit unsigned integer, complex */
     rocblas_datatype_bf16_r = 168, /**< 16 bit bfloat, real */
     rocblas_datatype_bf16_c = 169, /**< 16 bit bfloat, complex */
+    rocblas_datatype_bf8_r  = 170, /**<  8 bit bfloat, real */
+    rocblas_datatype_bf8_c  = 171, /**<  8 bit bfloat, complex */
 } rocblas_datatype;
 
 /*! \brief Indicates the pointer is device pointer or host pointer */

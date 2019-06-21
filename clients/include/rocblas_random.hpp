@@ -75,6 +75,12 @@ public:
     {
         return random_nan_data<rocblas_bfloat16, uint16_t, 7, 8>();
     }
+
+    // Random NaN bfloat8
+    explicit operator rocblas_bfloat8()
+    {
+        return random_nan_data<rocblas_bfloat8, uint8_t, 2, 5>();
+    }
 };
 
 /* ============================================================================================ */
@@ -93,6 +99,14 @@ template <>
 inline rocblas_half random_generator<rocblas_half>()
 {
     return float_to_half(std::uniform_int_distribution<int>(-2, 2)(rocblas_rng));
+};
+
+// for rocblas_bfloat8, generate float, and convert to rocblas_bfloat8
+/*! \brief  generate a random number in range [-2,-1,0,1,2] */
+template <>
+inline rocblas_bfloat8 random_generator<rocblas_bfloat8>()
+{
+    return rocblas_bfloat8(std::uniform_int_distribution<int>(-2, 2)(rocblas_rng));
 };
 
 // for rocblas_bfloat16, generate float, and convert to rocblas_bfloat16

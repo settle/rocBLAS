@@ -21,6 +21,8 @@ Datatypes:
         u32_c: 167
         bf16_r: 168
         bf16_c: 169
+        bf8_r: 170
+        bf8_c: 171
   - { half: f16_r, single: f32_r, double: f64_r }
   - { half complex: f16_c, single complex: f32_c, double complex: f64_c }
   - rocblas_initialization:
@@ -40,6 +42,8 @@ Real precisions: &real_precisions
     { a_type: f64_r, b_type: f64_r, c_type: f64_r, d_type: f64_r, compute_type: f64_r }
   - &int8_precision
     { a_type:  i8_r, b_type:  i8_r, c_type: i32_r, d_type: i32_r, compute_type: i32_r }
+  - &hpa_bf8_precision
+    { a_type:  bf8_r, b_type:  bf8_r, c_type: bf8_r, d_type: bf8_r, compute_type: f16_r }
   - &hpa_bf16_precision
     { a_type:  bf16_r, b_type:  bf16_r, c_type: bf16_r, d_type: bf16_r, compute_type: f32_r }
 
