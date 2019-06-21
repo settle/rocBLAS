@@ -52,6 +52,60 @@ void cblas_axpy<rocblas_half>(rocblas_int   n,
  */
 
 template <>
+void cblas_gemm<rocblas_bfloat8, rocblas_bfloat8, rocblas_half>(rocblas_operation transA,
+                                                                rocblas_operation transB,
+                                                                rocblas_int       m,
+                                                                rocblas_int       n,
+                                                                rocblas_int       k,
+                                                                rocblas_half      alpha,
+                                                                rocblas_bfloat8*  A,
+                                                                rocblas_int       lda,
+                                                                rocblas_bfloat8*  B,
+                                                                rocblas_int       ldb,
+                                                                rocblas_half      beta,
+                                                                rocblas_bfloat8*  C,
+                                                                rocblas_int       ldc)
+{
+    // cblas does not support rocblas_bfloat8, so convert to higher precision float
+    // This will give more precise result which is acceptable for testing
+    float alpha_float = static_cast<float>(alpha);
+    float beta_float  = static_cast<float>(beta);
+
+    size_t sizeA = (transA == rocblas_operation_none ? k : m) * static_cast<size_t>(lda);
+    size_t sizeB = (transB == rocblas_operation_none ? n : k) * static_cast<size_t>(ldb);
+    size_t sizeC = n * static_cast<size_t>(ldc);
+
+    host_vector<float> A_float(sizeA), B_float(sizeB), C_float(sizeC);
+
+    for(size_t i = 0; i < sizeA; i++)
+        A_float[i] = static_cast<float>(A[i]);
+    for(size_t i = 0; i < sizeB; i++)
+        B_float[i] = static_cast<float>(B[i]);
+    for(size_t i = 0; i < sizeC; i++)
+        C_float[i] = static_cast<float>(C[i]);
+
+    // just directly cast, since transA, transB are integers in the enum
+    // printf("transA: rocblas =%d, cblas=%d\n", transA, static_cast<CBLAS_TRANSPOSE>(transA) );
+    cblas_sgemm(CblasColMajor,
+                static_cast<CBLAS_TRANSPOSE>(transA),
+                static_cast<CBLAS_TRANSPOSE>(transB),
+                m,
+                n,
+                k,
+                alpha_float,
+                A_float,
+                lda,
+                B_float,
+                ldb,
+                beta_float,
+                C_float,
+                ldc);
+
+    for(size_t i = 0; i < sizeC; i++)
+        C[i] = static_cast<rocblas_bfloat8>(C_float[i]);
+}
+
+template <>
 void cblas_gemm<rocblas_bfloat16, rocblas_bfloat16, float>(rocblas_operation transA,
                                                            rocblas_operation transB,
                                                            rocblas_int       m,
